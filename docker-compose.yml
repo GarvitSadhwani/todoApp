@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: todoappdb
       POSTGRES_DB: simplitask
     ports:
-      - 6543:6543
+      - 5432:5432
         
         
   adminer:
@@ -19,4 +19,4 @@ services:
     environment:
       ADMINER_DESIGN: dracula
     ports:
-      - 5555:8080
+      - 3333:8080

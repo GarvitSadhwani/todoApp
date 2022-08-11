@@ -14,7 +14,7 @@ import (
 
 func main() {
 	router := chi.NewRouter()
-	db, err := sql.Open("pgx", "host=localhost port=5437 user=todoappdb password=todoappdb dbname=simplitask sslmode=disable")
+	db, err := sql.Open("pgx", "host=localhost port=5432 user=todoappdb password=todoappdb dbname=simplitask sslmode=disable")
 	if err != nil {
 		fmt.Printf("error connecting to db")
 	}
