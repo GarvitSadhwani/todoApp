@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"net/http"
 
@@ -8,10 +9,20 @@ import (
 	"github.com/GarvitSadhwani/todoApp/templates"
 	"github.com/GarvitSadhwani/todoApp/views"
 	chi "github.com/go-chi/chi/v5"
+	_ "github.com/jackc/pgx/v4/stdlib"
 )
 
 func main() {
 	router := chi.NewRouter()
+	db, err := sql.Open("pgx", "host=localhost port=5437 user=todoappdb password=todoappdb dbname=simplitask sslmode=disable")
+	if err != nil {
+		fmt.Printf("error connecting to db")
+	}
+	err = db.Ping()
+	if err != nil {
+		fmt.Printf("cant comm with db")
+	}
+	defer db.Close()
 	tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml"))
 	router.Get("/", controllers.StaticHandler(tpl))
 
