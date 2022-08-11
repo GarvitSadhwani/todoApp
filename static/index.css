@@ -1,0 +1,99 @@
+﻿*{
+    box-sizing:border-box;
+}
+a:link {
+    color: none;
+    text-decoration: none;
+    cursor: auto;
+}
+a:visited {
+    color: none;
+    text-decoration: none;
+    cursor: auto;
+}
+.header1 {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+}
+#icon{
+    padding-top:15px;
+    padding-left:40px;
+    grid-column-start: 23;
+    grid-column-end: 28;
+}
+#gap{
+    padding-top:30px;
+    padding-right:40px;
+    grid-column-start: 29;
+    grid-column-end: 30;
+    text-align:center;
+    color:black;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+}
+#contact {
+    text-align: center;
+    text-decoration: double;
+    padding: 40px;    
+}
+#user {
+    text-align: center;
+    padding: 40px;
+    grid-column-start: 50;    
+}
+.landing {
+    background-image: linear-gradient(180deg,rgba(54,52,52,0.4) 0%,rgba(0,0,0,5) 100%),url("banner3.gif");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.header2{
+    background-color:rgba(54,52,52,0.8);
+    width:100%;
+    height:50px;
+    margin-top:18px;
+    padding-top:1%;
+    padding-left:480px;
+    padding-bottom:0;
+}
+.tab {
+    color: white;
+    background-color: rgba(54,52,52,0.0);
+    border:0px;
+    padding: 20px;
+    padding-top:1px;
+    padding-bottom:11.5px;
+    text-align: center;
+    transition-duration: 0.3s;
+    width: 15%;
+}
+.tab:hover{
+    border-bottom:5px solid red;
+}
+.button1{
+    background-color:rgb(0 0 0 / 0.00);
+    color:white;
+    border:3px solid red;
+    padding:10px;
+    margin-left:13%;
+    margin-top:5%;
+    transition-duration:0.3s;
+}
+.button1:hover{
+    background-color:red;
+}
+.cards {
+    display: grid;
+    grid-template-columns: auto ; 
+    grid-template-rows: auto auto auto auto auto auto ; 
+    grid-column-gap: 30px;    
+}
+.card{
+    height:150px;
+    width:190px;
+    box-shadow:black 10px 10px 20px;
+    transition-duration:0.3s;
+}
+.card:hover{
+    height:160px;
+    width:200px;
+    box-shadow:black 10px 10px 20px;
+}
