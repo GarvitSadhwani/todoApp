@@ -16,21 +16,31 @@ func main() {
 	router := chi.NewRouter()
 	db, err := sql.Open("pgx", "host=localhost port=5432 user=todoappdb password=todoappdb dbname=simplitask sslmode=disable")
 	if err != nil {
-		fmt.Printf("error connecting to db")
+		fmt.Println("error connecting to database")
 	}
 	err = db.Ping()
 	if err != nil {
-		fmt.Printf("cant comm with db")
+		fmt.Println("cant communicate with database")
 	}
 	defer db.Close()
-	tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml"))
+	tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml", "layout.gohtml"))
 	router.Get("/", controllers.StaticHandler(tpl))
 
-	usersC := controllers.Users{}
-	usersC.Templates.New = views.Must(views.ParseFS(templates.FS, "signup.gohtml"))
-	router.Get("/signup", controllers.StaticHandler(usersC.Templates.New))
+	tpl = views.Must(views.ParseFS(templates.FS, "contact.gohtml", "layout.gohtml"))
+	router.Get("/contact", controllers.StaticHandler(tpl))
 
-	fmt.Printf("starting server at 8080")
+	tpl = views.Must(views.ParseFS(templates.FS, "faq.gohtml", "layout.gohtml"))
+	router.Get("/faq", controllers.FAQ(tpl))
+
+	userCont := controllers.User{}
+	userCont.Templates.New = views.Must(views.ParseFS(templates.FS, "signup.gohtml", "layout.gohtml"))
+	router.Get("/signup", userCont.New)
+	router.Post("/users", userCont.Create)
+
+	tpl = views.Must(views.ParseFS(templates.FS, "notFound.gohtml"))
+	router.NotFound(controllers.StaticHandler(tpl))
+
+	fmt.Println("Starting server at port: 8080")
 	http.ListenAndServe(":8080", router)
 
 }
