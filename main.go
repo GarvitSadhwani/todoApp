@@ -2,13 +2,25 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
+	"path/filepath"
 
+	"github.com/GarvitSadhwani/todoApp/views"
 	chi "github.com/go-chi/chi/v5"
 )
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<h1>creating from scratch</h1>")
+	tplPath := filepath.Join("templates", "home.gohtml")
+	tpl, err := template.ParseFiles(tplPath)
+	if err != nil {
+		fmt.Printf("error parsing")
+	}
+	viewTpl := views.Template{
+		HTMLTpl: tpl,
+	}
+	viewTpl.Execute(w, nil)
+
 }
 
 func main() {
