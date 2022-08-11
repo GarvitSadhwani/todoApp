@@ -1,0 +1,19 @@
+{{template "header" .}}
+<div class="px-5 py-5 flex justify-center ">
+    <div class="px-4 py-4 shadow-lg bg-white">
+        <h1 class="text-4xl text-gray-800 font-semibold px-5 py-5">Start sharing your favourite pics!</h1>
+        <form method="post" action="/users" class="px-5 py-5">
+            <label for="email" class="txt-gray-900 text-sm">Email</label>
+            <input class="w-full placeholder-gray-500 border-solid border px-2 py-2" 
+            type="email" name="email" id="email" placeholder="Your email ID" value="{{.Email}}" autofocus/>
+            <br><br>
+            <label for="password" class="txt-gray-900 text-sm py-3">Password</label>
+            <input class="w-full placeholder-gray-500 border-solid border px-2 py-2" 
+            type="password" name="password" id="password" placeholder="Enter 6 or more characters"/>
+            <br><br>
+            <button type="submit" class="w-full px-5 py-3 bg-blue-400 position-bottom text-white hover:bg-blue-500 rounded">Submit</button>
+        </form>
+
+    </div>
+</div>
+{{template "footer" .}}
