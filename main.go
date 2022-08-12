@@ -13,6 +13,10 @@ import (
 )
 
 func main() {
+	var newTask string
+	var newTaskDetail string
+	newTask = ""
+	newTaskDetail = ""
 	router := chi.NewRouter()
 	db, err := sql.Open("pgx", "host=localhost port=5432 user=todoappdb password=todoappdb dbname=simplitask sslmode=disable")
 	if err != nil {
@@ -23,16 +27,21 @@ func main() {
 		fmt.Println("cant communicate with database")
 	}
 	defer db.Close()
+	// newTask = "new task"
+	// newTaskDetail = "some details"
+	userCont := controllers.User{}
 	tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml", "layout.gohtml"))
-	router.Get("/", controllers.StaticHandler(tpl))
+	router.Get("/", userCont.HomeHandler(tpl, newTask, newTaskDetail))
 
 	tpl = views.Must(views.ParseFS(templates.FS, "contact.gohtml", "layout.gohtml"))
 	router.Get("/contact", controllers.StaticHandler(tpl))
 
+	tpl = views.Must(views.ParseFS(templates.FS, "addTask.gohtml", "layout.gohtml"))
+	router.Get("/addTask", controllers.StaticHandler(tpl))
+
 	tpl = views.Must(views.ParseFS(templates.FS, "faq.gohtml", "layout.gohtml"))
 	router.Get("/faq", controllers.FAQ(tpl))
 
-	userCont := controllers.User{}
 	userCont.Templates.New = views.Must(views.ParseFS(templates.FS, "signup.gohtml", "layout.gohtml"))
 	router.Get("/signup", userCont.New)
 	router.Post("/users", userCont.Create)

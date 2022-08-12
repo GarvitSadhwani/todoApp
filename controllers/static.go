@@ -15,6 +15,11 @@ type QnA struct {
 	Ans  string
 }
 
+type Task struct {
+	Task   string
+	Detail string
+}
+
 func FAQ(tpl Template) http.HandlerFunc {
 	questions := []QnA{
 		{

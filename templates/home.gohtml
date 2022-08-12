@@ -1,5 +1,33 @@
 {{template "header"}}
-<div class="px-10 py-10 text-4xl">
-    Your Gallery
+<div class="w-50 h-2/5">
+    <div class="w-full h-full bg-cover"
+    style="background-image: linear-gradient(180deg,rgba(54,52,52,0.4) 0%,rgba(0,0,0,5) 100%),url('https://i.pinimg.com/originals/d3/fe/2a/d3fe2aa54115dc44d404282f223cb25c.gif');">
+    </div>
 </div>
+<div>
+    <div class="flex justify-right">
+        <a href="/addTask" class="bg-gray-600 text-white duration-300 hover:bg-gray-800">add a task</a>
+    </div>
+    {{range .}}
+    <div class="flex justify-center py-5">
+        {{template "task" .}}
+        <br>
+   
+        <br>
+    </div>
+     {{end}}
+    <div class="flex justify-center text-4xl text-gray-500 py-10">
+        Woohoo! No more tasks for today! 
+    </div>
+    
+    
+</div>
+
+{{define "task"}}
+    <div class="bg-white shadow-md w-3/5 h-2/5 py-5 px-5 duration-300 hover:shadow-lg">
+        <h1 class="text-gray-900 text-4xl">{{.Task}}</h1>
+        <br>
+        {{.Detail}}
+    </div>
+{{end}}
 {{template "footer"}}

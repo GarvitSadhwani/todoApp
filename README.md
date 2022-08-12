@@ -1,1 +1,2 @@
-# photoApp
+# Simplitask, the todo App
+
