@@ -3,8 +3,9 @@ A secure app to manage your tasks.
 
 ## Features
 - Access using your personal credentials
-    ![homepage](https://raw.githubusercontent.com/GarvitSadhwani/todoApp/main/templates/home.JPG)
+    ![homepage](https://raw.githubusercontent.com/GarvitSadhwani/todoApp/main/templates/login.JPG)
 - Add/delete tasks on the homepage
+    ![homepage](https://raw.githubusercontent.com/GarvitSadhwani/todoApp/main/templates/home.JPG)
     ![homepage](https://raw.githubusercontent.com/GarvitSadhwani/todoApp/main/templates/addtask.JPG)
 - All tasks displayed chronologically
     ![homepage](https://raw.githubusercontent.com/GarvitSadhwani/todoApp/main/templates/tasks.JPG)
