@@ -25,16 +25,16 @@ type Task struct {
 func FAQ(tpl Template) http.HandlerFunc {
 	questions := []QnA{
 		{
-			Ques: "What is the limits on photos",
-			Ans:  "As much as you want",
+			Ques: "What is the limit on number of tasks",
+			Ans:  "As much as you want!",
 		},
 		{
-			Ques: "How do I contact support",
-			Ans:  "Contact us at garvit.sadh@gmail.com",
+			Ques: "How does it work",
+			Ans:  "Add tasks on your home page and they will stay there for as long as you require. Simply click on the cross to delete a task.",
 		},
 		{
-			Ques: "How long did it take to work on this",
-			Ans:  "Constant efforts and was done quickly",
+			Ques: "What if I add a task that is to be done before some other tasks",
+			Ans:  "The algorithm will show your tasks according to the time you enter, irrespective of when you enter that task.",
 		},
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
