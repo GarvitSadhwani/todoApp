@@ -1,17 +1,11 @@
 {{template "header" .}}
 <div class="px-5 py-5 flex justify-center ">
     <div class="px-4 py-4 shadow-lg bg-white">
-        <h1 class="text-4xl text-gray-800 font-semibold px-5 py-5">Start simplifying task management!</h1>
-        <form method="post" action="/adduser" class="px-5 py-5">
-            <input class="w-1/2 placeholder-gray-500 border-solid border px-2 py-2" 
-            type="text" name="first_name" id="first_name" placeholder="First Name" autofocus/>
-            <br><br>
-            <input class="w-1/2 placeholder-gray-500 border-solid border px-2 py-2" 
-            type="text" name="last_name" id="last_name" placeholder="Last Name"/>
-            <br><br>
+        <h1 class="text-4xl text-gray-800 font-semibold px-5 py-5">Welcome back, please sign in to your account</h1>
+        <form method="post" action="/loginuser" class="px-5 py-5">
             <label for="email" class="txt-gray-900 text-sm">Email</label>
             <input class="w-full placeholder-gray-500 border-solid border px-2 py-2" 
-            type="email" name="email" id="email" placeholder="Your email ID"/>
+            type="email" name="email" id="email" placeholder="Your email ID" value="{{.Email}}" autofocus/>
             <br><br>
             <label for="password" class="txt-gray-900 text-sm py-3">Password</label>
             <input class="w-full placeholder-gray-500 border-solid border px-2 py-2" 

@@ -5,10 +5,11 @@
     </div>
 </div>
 <div>
+    <div>Hi {{.Uname}}</div>
     <div class="flex justify-right">
         <a href="/addTask" class="bg-gray-600 text-white duration-300 hover:bg-gray-800">add a task</a>
     </div>
-    {{range .}}
+    {{range .Tasks}}
     <div class="flex justify-center py-5">
         {{template "task" .}}
         <br>
@@ -19,8 +20,6 @@
     <div class="flex justify-center text-4xl text-gray-500 py-10">
         Woohoo! No more tasks for today! 
     </div>
-    
-    
 </div>
 
 {{define "task"}}
