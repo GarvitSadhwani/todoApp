@@ -95,6 +95,16 @@ func authUser(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/home"+title, http.StatusSeeOther)
 }
 
+func logoutUser(w http.ResponseWriter, r *http.Request) {
+	currentUserID = 0
+	currentUserName = ""
+	tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml", "layout.gohtml"))
+	title := r.URL.Path[len("/signout"):]
+	router.Get("/homer", userCont.HomeHandler(tpl, currentUserID, currentUserName))
+	router.Get("/home", userCont.HomeHandler(tpl, currentUserID, currentUserName))
+	http.Redirect(w, r, "/"+title, http.StatusSeeOther)
+}
+
 func addTask(w http.ResponseWriter, r *http.Request) {
 	db, err := sql.Open("pgx", "host=localhost port=5432 user=todoappdb password=todoappdb dbname=simplitask sslmode=disable")
 	if err != nil {
@@ -116,14 +126,24 @@ func addTask(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/home"+title, http.StatusSeeOther)
 }
 
-func logoutUser(w http.ResponseWriter, r *http.Request) {
-	currentUserID = 0
-	currentUserName = ""
+func deleteTask(w http.ResponseWriter, r *http.Request) {
+	db, err := sql.Open("pgx", "host=localhost port=5432 user=todoappdb password=todoappdb dbname=simplitask sslmode=disable")
+	if err != nil {
+		fmt.Println("error connecting to database")
+	}
+	err = db.Ping()
+	if err != nil {
+		fmt.Println("cant communicate with database")
+	}
+
+	_, err = db.Exec(`delete from tasks where id=$1 and task=$2 and details=$3;`, currentUserID, r.FormValue("task"), r.FormValue("detail"))
+	if err != nil {
+		fmt.Println("error running query")
+	}
 	tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml", "layout.gohtml"))
-	title := r.URL.Path[len("/newTask"):]
-	router.Get("/homer", userCont.HomeHandler(tpl, currentUserID, currentUserName))
+	title := r.URL.Path[len("/deleteTask"):]
 	router.Get("/home", userCont.HomeHandler(tpl, currentUserID, currentUserName))
-	http.Redirect(w, r, "/"+title, http.StatusSeeOther)
+	http.Redirect(w, r, "/home"+title, http.StatusSeeOther)
 }
 
 func main() {
@@ -145,6 +165,7 @@ func main() {
 	router.Post("/adduser", addUser)
 	router.Post("/signout", logoutUser)
 	router.Post("/loginuser", authUser)
+	router.Post("/deletetask", deleteTask)
 
 	tpl = views.Must(views.ParseFS(templates.FS, "home.gohtml", "layout.gohtml"))
 	router.Get("/home", userCont.HomeHandler(tpl, currentUserID, currentUserName))

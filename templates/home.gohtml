@@ -24,7 +24,12 @@
 
 {{define "task"}}
     <div class="bg-white shadow-md w-3/5 h-2/5 py-5 px-5 duration-300 hover:shadow-lg">
-        <h1 class="text-gray-900 text-4xl">{{.Task}}</h1>
+        <span class="text-gray-900 text-4xl">{{.Task}}</span>
+        <form method="post" action="/deletetask">
+        <input type="hidden" id="task" name="task" value={{.Task}}>
+        <input type="hidden" id="detail" name="detail" value={{.Detail}}>
+        <button type="submit" class="text-md px-2 py-2 bg-gray-500">Delete task</button>
+        </form>
         <br>
         {{.Detail}}
     </div>

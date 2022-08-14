@@ -16,8 +16,10 @@ type QnA struct {
 }
 
 type Task struct {
-	Task   string
-	Detail string
+	Task      string
+	Detail    string
+	TimeStart int
+	TimeEnd   int
 }
 
 func FAQ(tpl Template) http.HandlerFunc {
