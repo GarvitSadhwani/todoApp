@@ -116,6 +116,16 @@ func addTask(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/home"+title, http.StatusSeeOther)
 }
 
+func logoutUser(w http.ResponseWriter, r *http.Request) {
+	currentUserID = 0
+	currentUserName = ""
+	tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml", "layout.gohtml"))
+	title := r.URL.Path[len("/newTask"):]
+	router.Get("/homer", userCont.HomeHandler(tpl, currentUserID, currentUserName))
+	router.Get("/home", userCont.HomeHandler(tpl, currentUserID, currentUserName))
+	http.Redirect(w, r, "/"+title, http.StatusSeeOther)
+}
+
 func main() {
 	router = chi.NewRouter()
 	db, err := sql.Open("pgx", "host=localhost port=5432 user=todoappdb password=todoappdb dbname=simplitask sslmode=disable")
@@ -128,11 +138,12 @@ func main() {
 	}
 	defer db.Close()
 	userCont = controllers.User{}
-	tpl := views.Must(views.ParseFS(templates.FS, "landing.gohtml", "layout.gohtml"))
+	tpl := views.Must(views.ParseFS(templates.FS, "landing.gohtml", "layout_landing.gohtml"))
 	router.Get("/", controllers.StaticHandler(tpl))
 	tpl = views.Must(views.ParseFS(templates.FS, "signin.gohtml", "layout.gohtml"))
 	router.Get("/signin", controllers.StaticHandler(tpl))
 	router.Post("/adduser", addUser)
+	router.Post("/signout", logoutUser)
 	router.Post("/loginuser", authUser)
 
 	tpl = views.Must(views.ParseFS(templates.FS, "home.gohtml", "layout.gohtml"))
@@ -140,6 +151,8 @@ func main() {
 
 	tpl = views.Must(views.ParseFS(templates.FS, "contact.gohtml", "layout.gohtml"))
 	router.Get("/contact", controllers.StaticHandler(tpl))
+	tpl = views.Must(views.ParseFS(templates.FS, "contact.gohtml", "layout_landing.gohtml"))
+	router.Get("/contact_l", controllers.StaticHandler(tpl))
 
 	tpl = views.Must(views.ParseFS(templates.FS, "addTask.gohtml", "layout.gohtml"))
 	router.Get("/addTask", controllers.StaticHandler(tpl))
@@ -147,6 +160,8 @@ func main() {
 
 	tpl = views.Must(views.ParseFS(templates.FS, "faq.gohtml", "layout.gohtml"))
 	router.Get("/faq", controllers.FAQ(tpl))
+	tpl = views.Must(views.ParseFS(templates.FS, "faq.gohtml", "layout_landing.gohtml"))
+	router.Get("/faq_l", controllers.FAQ(tpl))
 
 	userCont.Templates.New = views.Must(views.ParseFS(templates.FS, "signup.gohtml", "layout.gohtml"))
 	router.Get("/signup", userCont.New)

@@ -35,7 +35,6 @@ func FAQ(tpl Template) http.HandlerFunc {
 			Ans:  "Constant efforts and was done quickly",
 		},
 	}
-
 	return func(w http.ResponseWriter, r *http.Request) {
 		tpl.Execute(w, questions)
 	}

@@ -7,15 +7,14 @@
 <body class="bg-gray-100">
     <nav class="px-5 py-5 flex bg-gray-900 text-white items-center">
       <div class="text-4xl pr-10">Simplitask</div>
-      <div class="flex-grow text-center">
-        <a class="text-lg hover:text-gray-300 pr-5" href="/home">Home</a>
-        <a class="text-lg hover:text-gray-300 pr-5" href="/contact">Contact us</a>
-        <a class="text-lg hover:text-gray-300 pr-5" href="/faq">FAQ</a>
+      <div class="flex-grow text-center relative left-2">
+        <a class="text-lg hover:text-gray-300 pr-5" href="/">Home</a>
+        <a class="text-lg hover:text-gray-300 pr-5" href="/contact_l">Contact us</a>
+        <a class="text-lg hover:text-gray-300 pr-5" href="/faq_l">FAQ</a>
       </div>
       <div>
-      <form method="post" action="/signout">
-      <button type="submit" class="w-full px-5 py-2 bg-blue-400 text-white rounded relative top-2 hover:bg-blue-500">Sign Out</button>
-      </form>
+      <a href="/signin" class="pr-8">Sign in</a>
+      <a href="/signup" class="bg-red-600 px-5 py-3 rounded hover:bg-red-400">Sign up</a>
       </div>
     </nav>
 {{end}}
