@@ -6,13 +6,40 @@
             <label for="task" class="txt-gray-900 text-sm">Task</label>
             <br>
             <input class="w-1/3 placeholder-gray-500 border-solid border px-2 py-2" 
-            type="task" name="task" id="task" placeholder="Your task" autofocus/>
+            type="text" name="task" id="task" placeholder="Your task" autofocus/>
             <br><br>
             <label for="detail" class="txt-gray-900 text-sm py-3">Details</label>
             <input class="w-full placeholder-gray-500 border-solid border px-2 py-2" 
-            type="detail" name="detail" id="detail" placeholder="Description"/>
+            type="text" name="detail" id="detail" placeholder="Description"/>
             <br><br>
-            <button type="submit" class="w-1/5 px-5 py-3 bg-blue-400 position-bottom text-white hover:bg-blue-500 rounded">Add this task</button>
+            <!--<label for="start" class="txt-gray-900 text-sm py-3">Start time</label>
+            <br>-->
+            <select class="w-2/5 placeholder-gray-500 border-solid border px-2 py-2" 
+            name="start" id="start" placeholder="Start time">
+            <option value="" disabled selected>Start Time</option>
+            <option value=0>00 Hrs</option><option value=1>01 Hrs</option><option value=2>02 Hrs</option><option value=3>03 Hrs</option>
+            <option value=4>04 Hrs</option><option value=5>05 Hrs</option><option value=6>06 Hrs</option><option value=7>07 Hrs</option>
+            <option value=8>08 Hrs</option><option value=9>09 Hrs</option><option value=10>10 Hrs</option><option value=11>11 Hrs</option>
+            <option value=12>12 Hrs</option><option value=13>13 Hrs</option><option value=14>14 Hrs</option><option value=15>15 Hrs</option>
+            <option value=16>16 Hrs</option><option value=17>17 Hrs</option><option value=18>18 Hrs</option><option value=19>19 Hrs</option>
+            <option value=20>20 Hrs</option><option value=21>21 Hrs</option><option value=22>22 Hrs</option><option value=23>23 Hrs</option>
+            <option value=24>24 Hrs</option>
+            </select>
+            <!--<label for="end" class="txt-gray-900 text-sm py-3">End time</label>
+            <br>-->
+            <select class="w-2/5 placeholder-gray-500 border-solid border px-2 py-2" 
+            name="end" id="end" placeholder="End time">
+            <option value="" disabled selected>End Time</option>
+            <option value=0>00 Hrs</option><option value=1>01 Hrs</option><option value=2>02 Hrs</option><option value=3>03 Hrs</option>
+            <option value=4>04 Hrs</option><option value=5>05 Hrs</option><option value=6>06 Hrs</option><option value=7>07 Hrs</option>
+            <option value=8>08 Hrs</option><option value=9>09 Hrs</option><option value=10>10 Hrs</option><option value=11>11 Hrs</option>
+            <option value=12>12 Hrs</option><option value=13>13 Hrs</option><option value=14>14 Hrs</option><option value=15>15 Hrs</option>
+            <option value=16>16 Hrs</option><option value=17>17 Hrs</option><option value=18>18 Hrs</option><option value=19>19 Hrs</option>
+            <option value=20>20 Hrs</option><option value=21>21 Hrs</option><option value=22>22 Hrs</option><option value=23>23 Hrs</option>
+            <option value=24>24 Hrs</option>
+            </select>
+            <br><br><br>
+            <button type="submit" class="w-1/5 px-5 py-3 bg-blue-400 position-bottom text-white duration-300 hover:bg-blue-500 rounded">Add this task</button>
         </form>
 
     </div>

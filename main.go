@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/GarvitSadhwani/todoApp/controllers"
 	"github.com/GarvitSadhwani/todoApp/templates"
@@ -11,6 +12,11 @@ import (
 	chi "github.com/go-chi/chi/v5"
 	_ "github.com/jackc/pgx/v4/stdlib"
 )
+
+var currentUserID int
+var currentUserName string
+var router *chi.Mux
+var userCont controllers.User
 
 func addUser(w http.ResponseWriter, r *http.Request) {
 	db, err := sql.Open("pgx", "host=localhost port=5432 user=todoappdb password=todoappdb dbname=simplitask sslmode=disable")
@@ -43,13 +49,14 @@ func addUser(w http.ResponseWriter, r *http.Request) {
 
 	defer db.Close()
 	title := r.URL.Path[len("/adduser"):]
-	http.Redirect(w, r, "/"+title, http.StatusSeeOther)
+	// http.Redirect(w, r, "/"+title, http.StatusSeeOther)
+	currentUserID = count
+	currentUserName = r.FormValue("first_name")
+	tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml", "layout.gohtml"))
+	router.Get("/homer", userCont.HomeHandler(tpl, currentUserID, currentUserName))
+	router.Get("/home", userCont.HomeHandler(tpl, currentUserID, currentUserName))
+	http.Redirect(w, r, "/home"+title, http.StatusSeeOther)
 }
-
-var currentUserID int
-var currentUserName string
-var router *chi.Mux
-var userCont controllers.User
 
 func authUser(w http.ResponseWriter, r *http.Request) {
 	db, err := sql.Open("pgx", "host=localhost port=5432 user=todoappdb password=todoappdb dbname=simplitask sslmode=disable")
@@ -72,21 +79,14 @@ func authUser(w http.ResponseWriter, r *http.Request) {
 	var l_name string
 	var em string
 	var pass string
-	found := false
 	for res.Next() {
-		found = true
 		err = res.Scan(&count, &f_name, &l_name, &em, &pass)
 		if err != nil {
 			fmt.Println("error retrieving data from row")
 		}
 	}
 	defer db.Close()
-	title := r.URL.Path[len("/authuser"):]
-	if !found {
-		fmt.Fprint(w, "<script>bad login, please try again</script>")
-		http.Redirect(w, r, "/signin"+title, http.StatusSeeOther)
-		return
-	}
+	title := r.URL.Path[len("/loginuser"):]
 	currentUserID = count
 	currentUserName = f_name
 	tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml", "layout.gohtml"))
@@ -115,12 +115,15 @@ func addTask(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("cant communicate with database")
 	}
 
-	_, err = db.Exec(`insert into tasks values($1,$2,$3);`, currentUserID, r.FormValue("task"), r.FormValue("detail"))
+	st, _ := strconv.Atoi(r.FormValue("start"))
+	en, _ := strconv.Atoi(r.FormValue("end"))
+	title := r.URL.Path[len("/newTask"):]
+	_, err = db.Exec(`insert into tasks values($1,$2,$3,$4,$5);`, currentUserID, r.FormValue("task"), r.FormValue("detail"), st, en)
 	if err != nil {
 		fmt.Println("error running query")
 	}
+
 	tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml", "layout.gohtml"))
-	title := r.URL.Path[len("/newTask"):]
 	router.Get("/homer", userCont.HomeHandler(tpl, currentUserID, currentUserName))
 	router.Get("/home", userCont.HomeHandler(tpl, currentUserID, currentUserName))
 	http.Redirect(w, r, "/home"+title, http.StatusSeeOther)
@@ -136,7 +139,7 @@ func deleteTask(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("cant communicate with database")
 	}
 
-	_, err = db.Exec(`delete from tasks where id=$1 and task=$2 and details=$3;`, currentUserID, r.FormValue("task"), r.FormValue("detail"))
+	_, err = db.Exec(`delete from tasks where id=$1 and task=$2 and detail=$3;`, currentUserID, r.FormValue("task"), r.FormValue("detail"))
 	if err != nil {
 		fmt.Println("error running query")
 	}
@@ -160,7 +163,7 @@ func main() {
 	userCont = controllers.User{}
 	tpl := views.Must(views.ParseFS(templates.FS, "landing.gohtml", "layout_landing.gohtml"))
 	router.Get("/", controllers.StaticHandler(tpl))
-	tpl = views.Must(views.ParseFS(templates.FS, "signin.gohtml", "layout.gohtml"))
+	tpl = views.Must(views.ParseFS(templates.FS, "signin.gohtml", "layout_landing.gohtml"))
 	router.Get("/signin", controllers.StaticHandler(tpl))
 	router.Post("/adduser", addUser)
 	router.Post("/signout", logoutUser)
@@ -184,7 +187,7 @@ func main() {
 	tpl = views.Must(views.ParseFS(templates.FS, "faq.gohtml", "layout_landing.gohtml"))
 	router.Get("/faq_l", controllers.FAQ(tpl))
 
-	userCont.Templates.New = views.Must(views.ParseFS(templates.FS, "signup.gohtml", "layout.gohtml"))
+	userCont.Templates.New = views.Must(views.ParseFS(templates.FS, "signup.gohtml", "layout_landing.gohtml"))
 	router.Get("/signup", userCont.New)
 	router.Post("/users", userCont.Create)
 

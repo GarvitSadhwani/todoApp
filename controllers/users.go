@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
+	"sort"
 )
 
 type User struct {
@@ -50,17 +51,28 @@ func (u User) HomeHandler(tpl Template, CurrentUserID int, CurrentUserName strin
 	var id int
 	var newT string
 	var newTD string
+	var st int
+	var en int
 	for res.Next() {
-		err = res.Scan(&id, &newT, &newTD)
+		err = res.Scan(&id, &newT, &newTD, &st, &en)
 		if err != nil {
 			fmt.Println("error retrieving data from row")
 		}
 		newTask := Task{
-			Task:   newT,
-			Detail: newTD,
+			Task:      newT,
+			Detail:    newTD,
+			TimeStart: st,
+			TimeEnd:   en,
 		}
 		MyTasks = append(MyTasks, newTask)
 	}
+
+	sort.SliceStable(MyTasks, func(i, j int) bool {
+		if MyTasks[i].TimeStart == MyTasks[j].TimeStart {
+			return MyTasks[i].TimeEnd < MyTasks[j].TimeEnd
+		}
+		return MyTasks[i].TimeStart < MyTasks[j].TimeStart
+	})
 
 	defer db.Close()
 	Dataset := Data{

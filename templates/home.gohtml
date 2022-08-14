@@ -18,20 +18,25 @@
     </div>
      {{end}}
     <div class="flex justify-center text-4xl text-gray-500 py-10">
-        Woohoo! No more tasks for today! 
+        All caught up with today's tasks! 
     </div>
 </div>
 
 {{define "task"}}
     <div class="bg-white shadow-md w-3/5 h-2/5 py-5 px-5 duration-300 hover:shadow-lg">
+        <div class="text-lg">
+        {{.TimeStart}}:00 Hrs - {{.TimeEnd}}:00 Hrs
+        </div>
         <span class="text-gray-900 text-4xl">{{.Task}}</span>
-        <form method="post" action="/deletetask">
-        <input type="hidden" id="task" name="task" value={{.Task}}>
-        <input type="hidden" id="detail" name="detail" value={{.Detail}}>
-        <button type="submit" class="text-md px-2 py-2 bg-gray-500">Delete task</button>
-        </form>
         <br>
         {{.Detail}}
+    </div>
+    <div class="bg-white shadow-md w-1/7 h-1 py-5 px-5 duration-300 hover:shadow-lg">
+    <form method="post" action="/deletetask">
+        <input type="hidden" id="task" name="task" value={{.Task}}>
+        <input type="hidden" id="detail" name="detail" value={{.Detail}}>
+        <button type="submit" class="text-4xl text-gray-500 px-2 relative bottom-6 duration-300 hover:text-gray-700">x</button>
+        </form>
     </div>
 {{end}}
 {{template "footer"}}
