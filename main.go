@@ -11,6 +11,7 @@ import (
 	"github.com/GarvitSadhwani/todoApp/views"
 	chi "github.com/go-chi/chi/v5"
 	_ "github.com/jackc/pgx/v4/stdlib"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var currentUserID int
@@ -42,14 +43,18 @@ func addUser(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	count++
-	_, err = db.Exec(`insert into users values($1,$2,$3,$4,$5);`, count, r.FormValue("first_name"), r.FormValue("last_name"), r.FormValue("email"), r.FormValue("password"))
+	enstr, err := bcrypt.GenerateFromPassword([]byte(r.FormValue("password")), 14)
+	if err != nil {
+		fmt.Printf("error computing password hash")
+	}
+	hashstr := string(enstr)
+	_, err = db.Exec(`insert into users values($1,$2,$3,$4,$5);`, count, r.FormValue("first_name"), r.FormValue("last_name"), r.FormValue("email"), hashstr)
 	if err != nil {
 		fmt.Println("error entering into database")
 	}
 
 	defer db.Close()
 	title := r.URL.Path[len("/adduser"):]
-	// http.Redirect(w, r, "/"+title, http.StatusSeeOther)
 	currentUserID = count
 	currentUserName = r.FormValue("first_name")
 	tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml", "layout.gohtml"))
@@ -68,7 +73,7 @@ func authUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("cant communicate with database")
 	}
 
-	res, err := db.Query("select * from users where email=$1 and password=$2", r.FormValue("email"), r.FormValue("password"))
+	res, err := db.Query("select * from users where email=$1", r.FormValue("email"))
 
 	if err != nil {
 		fmt.Println("error running query")
@@ -87,12 +92,20 @@ func authUser(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 	title := r.URL.Path[len("/loginuser"):]
-	currentUserID = count
-	currentUserName = f_name
-	tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml", "layout.gohtml"))
-	router.Get("/homer", userCont.HomeHandler(tpl, currentUserID, currentUserName))
-	router.Get("/home", userCont.HomeHandler(tpl, currentUserID, currentUserName))
-	http.Redirect(w, r, "/home"+title, http.StatusSeeOther)
+	err = bcrypt.CompareHashAndPassword([]byte([]byte(pass)), []byte(r.FormValue("password")))
+	if err == nil {
+		currentUserID = count
+		currentUserName = f_name
+		tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml", "layout.gohtml"))
+		router.Get("/homer", userCont.HomeHandler(tpl, currentUserID, currentUserName))
+		router.Get("/home", userCont.HomeHandler(tpl, currentUserID, currentUserName))
+		http.Redirect(w, r, "/home"+title, http.StatusSeeOther)
+	} else {
+		tpl := views.Must(views.ParseFS(templates.FS, "signinfailed.gohtml", "layout_landing.gohtml"))
+		router.Get("/signin", controllers.StaticHandler(tpl))
+		http.Redirect(w, r, "/signin"+title, http.StatusSeeOther)
+	}
+
 }
 
 func logoutUser(w http.ResponseWriter, r *http.Request) {
