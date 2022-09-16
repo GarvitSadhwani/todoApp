@@ -7,7 +7,7 @@ A secure app to manage your tasks.
 - Add/delete tasks on the homepage
     ![homepage](https://raw.githubusercontent.com/GarvitSadhwani/todoApp/main/templates/home.JPG)
     ![homepage](https://raw.githubusercontent.com/GarvitSadhwani/todoApp/main/templates/addtask.JPG)
-- All tasks displayed chronologically
+- All tasks displayed in order of their times
     ![homepage](https://raw.githubusercontent.com/GarvitSadhwani/todoApp/main/templates/tasks.JPG)
 - More features coming soon!
 
